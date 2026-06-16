@@ -1,33 +1,57 @@
 package com.example.demo.entity;
 
-// TODO: Import JPA annotations
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
-// Hint:
-// You need:
-// @Entity, @Id, @GeneratedValue
-
+@Entity
 public class Employee {
 
-    // TODO: Add fields
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    // Hint:
-    // id → Long (primary key, auto-generated)
-    // name → String
-    // designation → String
-    // salary → Double
+    private String name;
+    private String designation;
+    private Double salary;
 
-    // ----------------------------
+    public Employee() {
+    }
+    public Employee(String name, String designation, Double salary) {
+        this.name = name;
+        this.designation = designation;
+        this.salary = salary;
+    }
+    public Long getId() {
+        return id;
+    }
 
-    // TODO: Add constructors
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    // Hint:
-    // 1. Default constructor (important for JPA)
-    // 2. Parameterized constructor (all fields except id optional)
+    public String getName() {
+        return name;
+    }
 
-    // ----------------------------
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    // TODO: Add getters and setters
+    public String getDesignation() {
+        return designation;
+    }
 
-    // Hint:
-    // Right click → Source → Generate Getters and Setters
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
 }
