@@ -1,91 +1,73 @@
 package com.example.demo.controller;
 
-// TODO: Import Spring annotations
-// Hint:
-// @RestController, @RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping
+import java.util.List;
+import java.util.Optional;
 
-// TODO: Import Employee + Repository
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.entity.Employee;
+import com.example.demo.repository.EmployeeRepository;
+
+@RestController
+@RequestMapping("/employee")
 public class EmployeeController {
 
-    // TODO: Inject repository
+    @Autowired
+    private EmployeeRepository repo;
 
-    // Hint:
-    // Use constructor injection OR @Autowired
+   
+    @PostMapping("/save")
+    public Employee saveEmployee(@RequestBody Employee employee) {
 
-    // ==============================
-    // 1. CREATE EMPLOYEE
-    // ==============================
-    public Employee saveEmployee() {
-
-        // TODO:
-        // Accept Employee using @RequestBody
-
-        // TODO:
-        // Save using repository
-
-        // Hint:
-        // repo.save(employee)
-
-        return null;
+        return repo.save(employee);
     }
 
-    // ==============================
-    // 2. GET ALL EMPLOYEES
-    // ==============================
+    @GetMapping("/all")
     public List<Employee> getAllEmployees() {
 
-        // TODO:
-        // Return repo.findAll()
+        return repo.findAll();
+    }
+
+    
+    @GetMapping("/{id}")
+    public Employee getEmployeeById(@PathVariable long id) {
+
+        Optional<Employee> emp = repo.findById(id);
+
+        if (emp.isPresent()) {
+            return emp.get();
+        }
 
         return null;
     }
 
-    // ==============================
-    // 3. GET EMPLOYEE BY ID
-    // ==============================
-    public Employee getEmployeeById() {
+    
+    @PutMapping("/update/{id}")
+    public Employee updateEmployee(@PathVariable long id,
+                                   @RequestBody Employee employee) {
 
-        // TODO:
-        // Use @PathVariable
+        Optional<Employee> emp = repo.findById(id);
 
-        // TODO:
-        // repo.findById(id)
+        if (emp.isPresent()) {
 
-        // Hint:
-        // returns Optional → handle safely
+            Employee existingEmployee = emp.get();
 
-        return null;
-    }
+            existingEmployee.setName(employee.getName());
+            existingEmployee.setSalary(employee.getSalary());
 
-    // ==============================
-    // 4. UPDATE EMPLOYEE
-    // ==============================
-    public Employee updateEmployee() {
-
-        // TODO:
-        // Step 1: Find employee by id
-        // Step 2: Check if exists
-        // Step 3: Update fields
-        // Step 4: Save again
-
-        // Hint:
-        // repo.save(existingEmployee)
+            return repo.save(existingEmployee);
+        }
 
         return null;
     }
 
-    // ==============================
-    // 5. DELETE EMPLOYEE
-    // ==============================
-    public String deleteEmployee() {
+   
+    @DeleteMapping("/delete/{id}")
+    public String deleteEmployee(@PathVariable long id) {
 
-        // TODO:
-        // Delete by id
+        repo.deleteById(id);
 
-        // Hint:
-        // repo.deleteById(id)
-
-        return null;
+        return "Employee Deleted Successfully";
     }
 }
